@@ -1,0 +1,238 @@
+
+
+This file describes the variable mapping (SDO and PDO) of the motor controller.
+
+**********************SDO mapping**********************
+Controlword          0x6040
+
+Target rpm           0x60FF
+Acceleration         0x6083
+
+Statusword           0x6041
+
+Actual rpm           0x606C
+
+Voltage              0x2313.1
+Current              0x6078
+Temperature          0x2323.2
+Humidity             0x2313.2
+
+Status Reg 1         0x2320.1
+Status Reg 2         0x2320.2
+Status Reg 3         0x2320.3
+Status Reg 4         0x2320.4
+
+(Not mapped to PDOs)
+These values are set as 32-bit floating point numbers.
+kp                   0x2331.1 (range 0.0 - 25.5 in 0.1 steps)
+ki                   0x2331.2 (range 0.0 - 0.255 in 0.001 steps)
+
+save profile         0x1010.1
+    To save current configuration to the active profile (set via 0x2000),
+    send 1 to this address.
+
+select profile       0x2000
+    If you want to load a new profile, you need to reset the device
+    (via lss or by turning the power off and on again) after
+    selecting the profile with this command. If you want to save data to this
+    profile, no restart is required, just send 1 to 0x1010.1.
+    The number of usable profiles will depend on the size of the EEPROM.
+    Currently the profiles 0-4 can be used. If the device was not configured,
+    *all* profiles are configured for T200_R1. If EEPROM was configured with
+    the EEPROM_profile_config.sh script (found in the canfestival repository,
+    together with the command line utility that it uses, in
+    examples/thruster_control), the profiles are configured for the
+    following motors:
+    0 - ILM70_10 (Default selection)
+    1 - T200_R1
+    2 - T100_R1
+    3 - lmt_1920_18
+    4 - ILM70_10 (same as profile 0)
+
+profile parameters   0x2001.X
+    All the parameters are set via 32 bit floats.
+    Everything that has to be an integer, is converted afterwards.
+    The parameters are at the following subindexes:
+    node_id                .1 (also set via lss)
+    motor_type             .2
+    motor_numPolePairs     .3
+    motor_Rr               .4
+    motor_Rs               .5
+    motor_Ls_d             .6
+    motor_Ls_q             .7
+    motor_ratedFlux        .8
+    IdRated                .9
+    maxCurrent_resEst      .A
+    maxCurrent_indEst      .B
+    maxCurrent             .C
+    fluxEstFreq_Hz         .D
+    rpmLimit               .E
+    rpmpsLimit             .F
+    kp                     .10 (also set via 0x2331.1 register)
+    ki                     .11 (also set via 0x2331.2 register)
+
+
+**********************PDO mapping and variable description**********************
+====================RX====================
+----------PDO1----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |                                                                                                     |16---------Control word---------0|
+
+Control word bits (0x6040.0):
+ 0       System on
+ 1       Motor on
+ 2       Field weakening
+ 3       Force angle
+ 4       Resistance recalculation
+ 5       Power wrap
+ 6-14    Don't care
+15       *Automatic parameter detection
+
+*With this option most of the motor settings can be determined automatically.
+After enabling it, the motor (1) has to be turned off and on again.
+After turning it on, the controller will perform the required actions
+which may take a few minutes, and may make the motor turn.
+When the process is finished, the motor flag (1) is set to 0,
+but the automatic parameter detection flag remains at 1.
+If the detection was done once, the flag will be ignored until
+the device is reset, and the motor can be used normally.
+After the auto-detection, you can save the parameters to a profile,
+so that it won't be necessary to repeat the auto-detection.
+
+The auto-detection determines the following parameters (the rest has to be set
+manually *before* enabling this function):
+motor_Rr
+motor_Rs
+motor_Ls_d
+motor_Ls_q
+motor_ratedFlux
+IdRated
+
+----------PDO2----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |32-------------------------Target speed---------------------------0|32--------------------------Acceleration--------------------------0|
+
+Target speed (0x60FF.0):
+type - int32_t
+unit - rpm
+
+Acceleration (0x6083.0):
+type - uint32_t
+unit - rpmps
+
+----------PDO3----------
+Not used.
+
+----------PDO4----------
+Not used.
+
+
+====================TX====================
+----------PDO1----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |                                                                                                     |16---------Status word----------0|
+
+Status word bits (0x6041.0):
+ 0       System on
+ 1       Motor on
+ 2       Field weakening
+ 3       Force angle
+ 4       Resistance recalculation
+ 5       Power wrap
+ 6-14    Don't care
+15       *Automatic parameter detection
+
+----------PDO2----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |                                                                   |32-------------------------Actual speed---------------------------0|
+
+Actual speed (0x606C.0):
+int32_t
+
+----------PDO3----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |16-----------Voltage------------0|16-----------Current------------0|16---------Temperature----------0|16-----------Humidity-----------0|
+
+Voltage (0x2313.1):
+type - uint16_t
+unit - 0.1 V
+
+Current (0x6078.0):
+type - uint16_t
+unit - mA
+
+Temperature (0x2323.2):
+type - uint16_t
+unit - °C
+
+Humidity (0x2313.2):
+type - uint16_t
+unit - %
+
+----------PDO4----------
+
+Byte        |7               |6               |5               |4               |3               |2               |1               |0               |
+Description |16------Status register 4-------0|16------Status register 3-------0|16------Status register 2-------0|16------Status register 1-------0|
+
+Status register 1 bits (0x2320.1):
+ 0       OTW
+ 1       TEMP_FLAG3
+ 2       TEMP_FLAG2
+ 3       TEMP_FLAG1
+ 4       VCPH_UVFL
+ 5       VDS_STATUS
+ 6       PVDD_OVFL
+ 7       PVDD_UVFL
+ 8       TEMP_FLAG4
+ 9       STAT01_RSV1
+10       FAULT
+11-15    0
+
+Status register 2 bits (0x2320.2):
+ 0       SNS_A_OCP
+ 1       SNS_B_OCP
+ 2       SNS_C_OCP
+ 3       STAT02_RSV2
+ 4       STAT02_RSV1
+ 5       FETLC_VDS
+ 6       FETHC_VDS
+ 7       FETLB_VDS
+ 8       FETHB_VDS
+ 9       FETLA_VDS
+10       FETHA_VDS
+11-15    0
+
+Status register 3 bits (0x2320.3):
+ 0       VCPH_OVLO_ABS
+ 1       VCPH_OVLO
+ 2       VCPH_UVLO2
+ 3       STAT03_RSV2
+ 4       VCP_LSD_UVLO2
+ 5       AVDD_UVLO
+ 6       VREG_UV
+ 7       STAT03_RSV1
+ 8       OTS
+ 9       WD_FAULT
+10       PVDD_UVLO2
+11-15    0
+
+Status register 4 bits (0x2320.4):
+ 0       STAT04_RSV5
+ 1       STAT04_RSV4
+ 2       STAT04_RSV3
+ 3       STAT04_RSV2
+ 4       STAT04_RSV1
+ 5       FETLC_VGS
+ 6       FETHC_VGS
+ 7       FETLB_VGS
+ 8       FETHB_VGS
+ 9       FETLA_VGS
+10       FETHA_VGS
+11-15    0
+
+

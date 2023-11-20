@@ -1,0 +1,113 @@
+== Build ==
+
+{{{
+$ make ARCH=mini PDO_NUM=2
+}}}
+or
+{{{
+$ export ARCH=mini PDO_NUM=2
+$ make
+}}}
+
+== Example defining PDO in project ==
+{{{
+pdo_map_t pdo_map[] = {
+    {
+        .ptype = CO_PDO1,
+        .rx_map = { 1, 0x10, 0x00, 0x50, 0x70 },
+        .tx_map = { 3, 0x10, 0x00, 0x50, 0x70,
+                       0x10, 0x00, 0x51, 0x70,
+                       0x20, 0x00, 0x6C, 0x60 },
+        .rx_conf = 255,
+        .tx_conf = 1
+    }, {
+        PDO_DEFAULT(2)
+    // }, {
+    //     PDO_DEFAULT(3)
+    }, {
+        PDO_DEFAULT(4)
+    }
+};
+
+....
+
+    can_init(CAN_500KBPS);
+    if ((rc = co_init(NODE_ID, 1, pdo_map, sizeof(pdo_map) / sizeof(pdo_map[0]))) != 0) {
+        printf ("ERROR: co_init() return %d\r\n", rc);
+    }
+
+    ...
+
+    co_handle();
+}}}
+
+== Postponed NMT initialisation (postponed boot-up message) ==
+    can_init(CAN_500KBPS);
+    if ((rc = co_init(NODE_ID, 0, pdo_map, sizeof(pdo_map) / sizeof(pdo_map[0]))) != 0) {
+        printf ("ERROR: co_init() return %d\r\n", rc);
+    }
+
+    ...
+    /* other initialisation stuff */
+    ...
+
+    /* send boot-up message now */
+    nmt_init(can_node_id);
+
+    ...
+
+    co_handle();
+
+
+== Alternative PDO definition ==
+{{{
+static void map_pdo(void) {
+    uint16_t num, mode;
+
+    // RxPDO1
+    num = 1; co_memcpy_pack(dict_data(0x1600, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1600, 1), pdo_genmap(0x6040, 0, 16), 4);
+
+    // RxPDO2
+    num = 2; co_memcpy_pack(dict_data(0x1601, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1601, 1), pdo_genmap(0x60FF, 0, 32), 4);
+    co_memcpy_pack(dict_data(0x1601, 2), pdo_genmap(0x6083, 0, 32), 4);
+
+    // TxPDO1
+    num = 1; co_memcpy_pack(dict_data(0x1A00, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1A00, 1), pdo_genmap(0x6041, 0, 16), 4);
+    mode = 1; co_memcpy_pack(dict_data(0x1800, 2), &mode, 1);
+
+    // TxPDO2
+    num = 1; co_memcpy_pack(dict_data(0x1A01, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1A01, 1), pdo_genmap(0x606C, 0, 32), 4);
+    mode = 1; co_memcpy_pack(dict_data(0x1801, 2), &mode, 1);
+
+    // TxPDO3
+    num = 4; co_memcpy_pack(dict_data(0x1A02, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1A02, 1), pdo_genmap(0x2313, 1, 16), 4);
+    co_memcpy_pack(dict_data(0x1A02, 2), pdo_genmap(0x6078, 0, 16), 4);
+    co_memcpy_pack(dict_data(0x1A02, 3), pdo_genmap(0x2323, 2, 16), 4);
+    co_memcpy_pack(dict_data(0x1A02, 4), pdo_genmap(0x2313, 2, 16), 4);
+    mode = 1; co_memcpy_pack(dict_data(0x1802, 2), &mode, 1);
+
+    // TxPDO4
+    num = 4; co_memcpy_pack(dict_data(0x1A03, 0), &num, 1);
+    co_memcpy_pack(dict_data(0x1A03, 1), pdo_genmap(0x2023, 1, 16), 4);
+    co_memcpy_pack(dict_data(0x1A03, 2), pdo_genmap(0x2023, 2, 16), 4);
+    co_memcpy_pack(dict_data(0x1A03, 3), pdo_genmap(0x2023, 3, 16), 4);
+    co_memcpy_pack(dict_data(0x1A03, 4), pdo_genmap(0x2023, 4, 16), 4);
+    mode = 1; co_memcpy_pack(dict_data(0x1803, 2), &mode, 1);
+}
+
+static void *pdo_genmap(uint16_t index, int16_t subindex, uint8_t nbits) {
+    static uint8_t rs[4];
+
+    rs[0] = nbits;
+    rs[1] = subindex;
+    rs[2] = index & 0xFF;
+    rs[3] = index >> 8;
+
+    return rs;
+}
+}}}

@@ -1,0 +1,9 @@
+.dep
+lib
+build
+*.o
+*.elf
+*.hex
+*.a
+tags
+*.swp

@@ -1,0 +1,45 @@
+=== NMT protocol ===
+By default node in preoperational mode (PDO is disabled).
+
+To switch on all devices in operational mode (PDO is enabled) need to send:
+cansend can0 '000#0100'
+
+To switch on specific node with can id 'xx':
+cansend can0 '000#01xx'
+
+=== Sync ===
+To get data from all PDO mapped registers.
+cansend can0 '080#'
+
+=== LSS ===
+# switch to configuration mode
+cansend can0 '7e5#04010000.00000000'
+# no respond
+
+# switch to operation mode
+cansend can0 '7e5#04000000.00000000'
+# no respond
+
+# request node id
+cansend can0 '7e5#5e000000.00000000'
+# respond (10 - node id)
+ (1460378361.837114)  can0  RX - -  7E4   [8]  5E 10 00 00 00 00 00 00
+
+# change node id
+cansend can0 '7e5#11150000.00000000'
+# respond
+    # success
+     (1460378496.744946)  can0  RX - -  7E4   [8]  11 00 00 00 00 00 00 00
+    # faiL
+     (1460378474.275242)  can0  RX - -  7E4   [8]  11 01 00 00 00 00 00 00
+
+# store configuration
+cansend can0 '7e5#17150000.00000000'
+# respond
+    # store configuration not supported
+     (1460378656.134260)  can0  RX - -  7E4   [8]  17 01 00 00 00 00 00 00
+
+=== NMT ===
+# reset node with address 0x10
+cansend can0 '000#8110'
+
