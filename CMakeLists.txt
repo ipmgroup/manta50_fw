@@ -26,6 +26,8 @@ project(${PROJ_NAME} C ASM)
 set(PROJECT_LOC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # set (EXCLUDE_DIR ${PROJECT_LOC}"include/libcanopen/include/arch")
+set(EXCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libcanard)
+# message("EXCLUDE_DIR: ${EXCLUDE_DIR}")
 
 file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS "include/*.c" "include/*.cpp")
 # file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS "include/*/*.cpp")
@@ -37,6 +39,10 @@ foreach(_headerFile ${MODULE_HEADERS})
     list(APPEND MODULE_INCLUDE_DIRS ${_dir})
 endforeach()
 list(REMOVE_DUPLICATES MODULE_INCLUDE_DIRS)
+
+list(FILTER MODULE_SOURCES EXCLUDE REGEX "^${EXCLUDE_DIR}/")
+list(FILTER MODULE_HEADERS EXCLUDE REGEX "^${EXCLUDE_DIR}/")
+list(REMOVE_ITEM MODULE_INCLUDE_DIRS ${EXCLUDE_DIR})
 
 include(mw-src)
 write_file(SOURCES.txt "${MODULE_SOURCES}")
