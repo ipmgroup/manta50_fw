@@ -26,7 +26,19 @@ project(${PROJ_NAME} C ASM)
 set(PROJECT_LOC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # set (EXCLUDE_DIR ${PROJECT_LOC}"include/libcanopen/include/arch")
-set(EXCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libcanard)
+set(EXCLUDE_DIRS 
+    # "${PROJECT_LOC}/include/libcanard"
+    "${PROJECT_LOC}/include/libcanard/drivers/avr"
+    "${PROJECT_LOC}/include/libcanard/drivers/linux"
+    "${PROJECT_LOC}/include/libcanard/drivers/mcast"
+    "${PROJECT_LOC}/include/libcanard/drivers/nuttx"
+    "${PROJECT_LOC}/include/libcanard/drivers/socketcan"
+    "${PROJECT_LOC}/include/libcanard/drivers/stm32"
+    "${PROJECT_LOC}/include/libcanard/tests"
+    "${PROJECT_LOC}/include/libcanard/examples"
+    "${PROJECT_LOC}/include/c2000-canopen"
+    "${PROJECT_LOC}/include/libcanopen"
+)
 # message("EXCLUDE_DIR: ${EXCLUDE_DIR}")
 
 file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS "include/*.c" "include/*.cpp")
@@ -40,9 +52,11 @@ foreach(_headerFile ${MODULE_HEADERS})
 endforeach()
 list(REMOVE_DUPLICATES MODULE_INCLUDE_DIRS)
 
-list(FILTER MODULE_SOURCES EXCLUDE REGEX "^${EXCLUDE_DIR}/")
-list(FILTER MODULE_HEADERS EXCLUDE REGEX "^${EXCLUDE_DIR}/")
-list(REMOVE_ITEM MODULE_INCLUDE_DIRS ${EXCLUDE_DIR})
+foreach(EXCLUDE_DIR ${EXCLUDE_DIRS})
+    list(FILTER MODULE_SOURCES EXCLUDE REGEX "^${EXCLUDE_DIR}/")
+    list(FILTER MODULE_HEADERS EXCLUDE REGEX "^${EXCLUDE_DIR}/")
+    list(REMOVE_ITEM MODULE_INCLUDE_DIRS ${EXCLUDE_DIR})
+endforeach()
 
 include(mw-src)
 write_file(SOURCES.txt "${MODULE_SOURCES}")
@@ -57,8 +71,8 @@ target_include_directories(${PROJ_NAME} PRIVATE ${PROJECT_LOC}
 add_compile_options(-Wall -c99)
 target_compile_options(${PROJ_NAME} BEFORE PUBLIC -v28 -ml -mt -O2 --abi=coffabi
                     --diag_warning=225 --display_error_number)
-target_compile_definitions(${PROJ_NAME} PUBLIC FLASH RESET_MCP_ON_INACTIVITY=1 EEPROM_25AA02 NODE_ID=6
-                                        ARCH_BYTE16 DRV8305 CANOPEN CS_GPIO FAST_ROM_V1p7 F2802xF CS_GPIO
+target_compile_definitions(${PROJ_NAME} PUBLIC FLASH RESET_MCP_ON_INACTIVITY=1 NODE_ID=0
+                                        ARCH_BYTE16 DRV8305 CS_GPIO FAST_ROM_V1p7 F2802xF CS_GPIO
                                         MCP2515 nFault)
 
 target_link_directories(${PROJ_NAME} PRIVATE ${PROJECT_LOC} ${CG_TOOL_ROOT}/lib 

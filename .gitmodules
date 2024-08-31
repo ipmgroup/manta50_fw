@@ -1,4 +1,5 @@
 [submodule "include/libcanard"]
 	path = include/libcanard
 	url = https://github.com/karu2003/libcanard
+	branch = C2000
 

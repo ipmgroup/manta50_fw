@@ -1,6 +1,8 @@
 {
     "cmake.configureOnOpen": false,
     "files.associations": {
-        "main_env.h": "c"
+        "*.py": "python",
+        "main_env.h": "c",
+        "can-fifo.h": "c"
     }
 }

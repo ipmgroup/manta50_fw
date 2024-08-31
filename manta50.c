@@ -54,13 +54,21 @@
 #include <string.h>
 #include <stdlib.h>
 
+#ifdef MCP2515
+// #include "mcp2515.h"
+#include "can.h"
+#include "can-fifo.h"
+#endif
+
 //Canopen
+#ifdef CANOPEN
 #include "canopen-init.h"
 //#include "common.h"
-#include "can.h"
 #include "canopen.h"
 #include "canopen-pdo.h"
-#include "can-fifo.h"
+#endif
+
+
 
 //Other includes
 #include "ADC_temp.h"
@@ -738,7 +746,9 @@ void main(void)
 #ifdef DRV8305_SPI
 
             if(Flag_nFault) {
+                #ifdef CANOPEN
                 sendPdoOnFault();
+                #endif
 
                 Flag_nFault = 0;
             }
