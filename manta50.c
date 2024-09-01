@@ -78,6 +78,8 @@
 #pragma CODE_SECTION(mainISR, "ramfuncs");
 #endif
 
+#include "dronecan.h"
+
 // Include header files used in the main function
 
 // **************************************************************************
@@ -507,6 +509,8 @@ void main(void)
     HAL_setupSpiA(halHandle);
 #endif
 
+    initCanBuffer();
+
     for (;;)
     {
         // Waiting for enable system flag to be set
@@ -521,15 +525,16 @@ void main(void)
             {
                 resetDevice();
             }
-#ifdef CANOPEN
+// #ifdef CANOPEN
             HAL_setupSpi_MCP2515(halHandle);
             if (getRcvFlag(halHandle->mcp2515Handle))
             {
-                saveCanData();
+                // saveCanData();
+                canard_main();
             }
-            processCanData();
+            // processCanData();
             HAL_setupSpiA(halHandle);
-#endif
+// #endif
         }
 
         Flag_Latch_softwareUpdate = true;
@@ -548,15 +553,16 @@ void main(void)
 #ifdef DEBUG_CURRENT
             raw_current = calcAvgCurrent();
 #endif
-#ifdef CANOPEN
+// #ifdef CANOPEN
             HAL_setupSpi_MCP2515(halHandle);
             if (getRcvFlag(halHandle->mcp2515Handle))
             {
-                saveCanData();
+                // saveCanData();
+                canard_main();
             }
-            processCanData();
+            // processCanData();
             HAL_setupSpiA(halHandle);
-#endif
+// #endif
 
             CTRL_Obj *obj = (CTRL_Obj *)ctrlHandle;
 

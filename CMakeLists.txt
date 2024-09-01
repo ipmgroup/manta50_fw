@@ -71,7 +71,7 @@ target_include_directories(${PROJ_NAME} PRIVATE ${PROJECT_LOC}
 add_compile_options(-Wall -c99)
 target_compile_options(${PROJ_NAME} BEFORE PUBLIC -v28 -ml -mt -O2 --abi=coffabi
                     --diag_warning=225 --display_error_number)
-target_compile_definitions(${PROJ_NAME} PUBLIC FLASH RESET_MCP_ON_INACTIVITY=1 NODE_ID=0
+target_compile_definitions(${PROJ_NAME} PUBLIC FLASH RESET_MCP_ON_INACTIVITY=1 EEPROM_25AA02 NODE_ID=0
                                         ARCH_BYTE16 DRV8305 CS_GPIO FAST_ROM_V1p7 F2802xF CS_GPIO
                                         MCP2515 nFault)
 

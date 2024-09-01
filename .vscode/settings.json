@@ -3,6 +3,8 @@
     "files.associations": {
         "*.py": "python",
         "main_env.h": "c",
-        "can-fifo.h": "c"
+        "can-fifo.h": "c",
+        "user.h": "c",
+        "canard_c2000.h": "c"
     }
 }
