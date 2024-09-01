@@ -509,7 +509,10 @@ void main(void)
     HAL_setupSpiA(halHandle);
 #endif
 
+    HAL_setupSpi_MCP2515(halHandle);
+    setRcvFlag(halHandle->mcp2515Handle, true);
     initCanBuffer();
+    canard_main();
 
     for (;;)
     {
@@ -525,7 +528,7 @@ void main(void)
             {
                 resetDevice();
             }
-// #ifdef CANOPEN
+            // #ifdef CANOPEN
             HAL_setupSpi_MCP2515(halHandle);
             if (getRcvFlag(halHandle->mcp2515Handle))
             {
@@ -534,7 +537,7 @@ void main(void)
             }
             // processCanData();
             HAL_setupSpiA(halHandle);
-// #endif
+            // #endif
         }
 
         Flag_Latch_softwareUpdate = true;
@@ -553,7 +556,7 @@ void main(void)
 #ifdef DEBUG_CURRENT
             raw_current = calcAvgCurrent();
 #endif
-// #ifdef CANOPEN
+            // #ifdef CANOPEN
             HAL_setupSpi_MCP2515(halHandle);
             if (getRcvFlag(halHandle->mcp2515Handle))
             {
@@ -562,7 +565,7 @@ void main(void)
             }
             // processCanData();
             HAL_setupSpiA(halHandle);
-// #endif
+            // #endif
 
             CTRL_Obj *obj = (CTRL_Obj *)ctrlHandle;
 
@@ -1081,18 +1084,18 @@ void configMCP2515()
 
 void copyMotorParams()
 {
-    //		gUserParams.motor_type = gMotorVars.???;  // Set only manually.
-    //		gUserParams.motor_numPolePairs = gMotorVars.???; // Set only manually.
+    // gUserParams.motor_type = gMotorVars.? ?     ? ;     // Set only manually.
+    // gUserParams.motor_numPolePairs = gMotorVars.? ? ? ; // Set only manually.
     gUserParams.motor_Rr = gMotorVars.Rr_Ohm;
     gUserParams.motor_Rs = gMotorVars.Rs_Ohm;
     gUserParams.motor_Ls_d = gMotorVars.Lsd_H;
     gUserParams.motor_Ls_q = gMotorVars.Lsq_H;
     gUserParams.motor_ratedFlux = gMotorVars.Flux_VpHz;
     gUserParams.IdRated = gMotorVars.IdRef_A;
-    //		gUserParams.maxCurrent_resEst = gMotorVars.???; // Set only manually.
-    //		gUserParams.maxCurrent_indEst = gMotorVars.???; // Set only manually.
-    //		gUserParams.maxCurrent = gMotorVars.???; // Set only manually.
-    //		gUserParams.fluxEstFreq_Hz = gMotorVars.???; // Set only manually.
+    // gUserParams.maxCurrent_resEst = gMotorVars.? ? ? ; // Set only manually.
+    // gUserParams.maxCurrent_indEst = gMotorVars.? ? ? ; // Set only manually.
+    // gUserParams.maxCurrent = gMotorVars.? ? ? ;        // Set only manually.
+    // gUserParams.fluxEstFreq_Hz = gMotorVars.? ? ? ;    // Set only manually.
 }
 
 //@} //defgroup
