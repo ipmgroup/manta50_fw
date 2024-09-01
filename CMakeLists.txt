@@ -70,7 +70,7 @@ write_file(HEADERS.txt "${MODULE_HEADERS}")
 write_file(MW_SRC.txt "${MW_SRC}")
 # message("${MODULE_SOURCES}") message("${MODULE_HEADERS}")
 
-message("MODULE_INCLUDE_DIRS: ${MODULE_INCLUDE_DIRS}")
+# message("MODULE_INCLUDE_DIRS: ${MODULE_INCLUDE_DIRS}")
 
 add_executable(${PROJ_NAME} ${MODULE_SOURCES} ${MW_SRC} manta50.c)
 target_include_directories(
