@@ -2,4 +2,5 @@
 	path = include/libcanard
 	url = https://github.com/karu2003/libcanard
 	branch = C2000
+	update = rebase
 
