@@ -1,5 +1,5 @@
-#ifndef __CAN2C_H__
-#define __CAN2C_H__
+#ifndef __CAN_H__
+#define __CAN_H__
 
 #include <stdint.h>
 
