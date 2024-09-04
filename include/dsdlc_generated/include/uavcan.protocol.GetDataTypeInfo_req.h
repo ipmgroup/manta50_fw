@@ -1,49 +1,25 @@
-
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
 #include <canard.h>
-
-
 #include <uavcan.protocol.DataTypeKind.h>
-
 
 
 #define UAVCAN_PROTOCOL_GETDATATYPEINFO_REQUEST_MAX_SIZE 84
 #define UAVCAN_PROTOCOL_GETDATATYPEINFO_REQUEST_SIGNATURE (0x1B283338A7BED2D8ULL)
-
 #define UAVCAN_PROTOCOL_GETDATATYPEINFO_REQUEST_ID 2
-
-
-
-
 
 #if defined(__cplusplus) && defined(DRONECAN_CXX_WRAPPERS)
 class uavcan_protocol_GetDataTypeInfo_cxx_iface;
 #endif
 
-
 struct uavcan_protocol_GetDataTypeInfoRequest {
-
 #if defined(__cplusplus) && defined(DRONECAN_CXX_WRAPPERS)
     using cxx_iface = uavcan_protocol_GetDataTypeInfo_cxx_iface;
 #endif
-
-
-
-
     uint16_t id;
-
-
-
     struct uavcan_protocol_DataTypeKind kind;
-
-
-
     struct { uint8_t len; uint8_t data[80]; }name;
-
-
-
 };
 
 #ifdef __cplusplus
@@ -59,129 +35,73 @@ uint32_t uavcan_protocol_GetDataTypeInfoRequest_encode(struct uavcan_protocol_Ge
 bool uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_GetDataTypeInfoRequest* msg);
 
 #if defined(CANARD_DSDLC_INTERNAL)
-
 static inline void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
-static inline void _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
+static inline bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao);
 void _uavcan_protocol_GetDataTypeInfoRequest_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
-
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
+    size_t i;
 
     canardEncodeScalar(buffer, *bit_ofs, 16, &msg->id);
-
     *bit_ofs += 16;
-
-
-
-
-
     _uavcan_protocol_DataTypeKind_encode(buffer, bit_ofs, &msg->kind, false);
-
-
-
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    const uint8_t name_len = msg->name.len > 80 ? 80 : msg->name.len;
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     if (!tao) {
-
-
-        canardEncodeScalar(buffer, *bit_ofs, 7, &msg->name.len);
+        canardEncodeScalar(buffer, *bit_ofs, 7, &name_len);
         *bit_ofs += 7;
-
-
     }
-
-    for (size_t i=0; i < msg->name.len; i++) {
-
-
-
-
+    for (i=0; i < name_len; i++) {
         canardEncodeScalar(buffer, *bit_ofs, 8, &msg->name.data[i]);
-
         *bit_ofs += 8;
-
-
     }
-
-
-
-
-
 }
 
-void _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
-
+/*
+ decode uavcan_protocol_GetDataTypeInfoRequest, return true on failure, false on success
+*/
+bool _uavcan_protocol_GetDataTypeInfoRequest_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_GetDataTypeInfoRequest* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
-
+    size_t i;
     canardDecodeScalar(transfer, *bit_ofs, 16, false, &msg->id);
-
     *bit_ofs += 16;
 
-
-
-
-
-
-    _uavcan_protocol_DataTypeKind_decode(transfer, bit_ofs, &msg->kind, false);
-
-
-
-
-
-
-
+    if (_uavcan_protocol_DataTypeKind_decode(transfer, bit_ofs, &msg->kind, false)) {return true;}
 
     if (!tao) {
-
-
         canardDecodeScalar(transfer, *bit_ofs, 7, false, &msg->name.len);
         *bit_ofs += 7;
-
-
-
     } else {
-
         msg->name.len = ((transfer->payload_len*8)-*bit_ofs)/8;
-
-
     }
 
-
-
-    for (size_t i=0; i < msg->name.len; i++) {
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    if (msg->name.len > 80) {
+        return true; /* invalid value */
+    }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+    for (i=0; i < msg->name.len; i++) {
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->name.data[i]);
-
         *bit_ofs += 8;
-
-
     }
 
-
-
-
-
-
-
+    return false; /* success */
 }
 #endif
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -192,8 +112,5 @@ struct uavcan_protocol_GetDataTypeInfoRequest sample_uavcan_protocol_GetDataType
 
 #ifdef DRONECAN_CXX_WRAPPERS
 #include <canard/cxx_wrappers.h>
-
-
-
 #endif
 #endif

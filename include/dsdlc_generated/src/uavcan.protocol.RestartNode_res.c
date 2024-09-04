@@ -1,8 +1,5 @@
-
-
 #define CANARD_DSDLC_INTERNAL
 #include <uavcan.protocol.RestartNode_res.h>
-
 #include <string.h>
 
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -30,14 +27,21 @@ uint32_t uavcan_protocol_RestartNodeResponse_encode(struct uavcan_protocol_Resta
   return true if the decode is invalid
  */
 bool uavcan_protocol_RestartNodeResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_RestartNodeResponse* msg) {
+#if CANARD_ENABLE_TAO_OPTION
+    if (transfer->tao && (transfer->payload_len > UAVCAN_PROTOCOL_RESTARTNODE_RESPONSE_MAX_SIZE)) {
+        return true; /* invalid payload length */
+    }
+#endif
     uint32_t bit_ofs = 0;
-    _uavcan_protocol_RestartNodeResponse_decode(transfer, &bit_ofs, msg, 
+    if (_uavcan_protocol_RestartNodeResponse_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else
     true
 #endif
-    );
+    )) {
+        return true; /* invalid payload */
+    }
 
     const uint32_t byte_len = (bit_ofs+7U)/8U;
 #if CANARD_ENABLE_TAO_OPTION
@@ -52,21 +56,9 @@ bool uavcan_protocol_RestartNodeResponse_decode(const CanardRxTransfer* transfer
 
 #ifdef CANARD_DSDLC_TEST_BUILD
 struct uavcan_protocol_RestartNodeResponse sample_uavcan_protocol_RestartNodeResponse_msg(void) {
-
     struct uavcan_protocol_RestartNodeResponse msg;
 
-
-
-
-
-
     msg.ok = (bool)random_bitlen_unsigned_val(1);
-
-
-
-
-
     return msg;
-
 }
 #endif

@@ -1,8 +1,5 @@
-
-
 #define CANARD_DSDLC_INTERNAL
 #include <uavcan.tunnel.SerialConfig.h>
-
 #include <string.h>
 
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -30,14 +27,21 @@ uint32_t uavcan_tunnel_SerialConfig_encode(struct uavcan_tunnel_SerialConfig* ms
   return true if the decode is invalid
  */
 bool uavcan_tunnel_SerialConfig_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_SerialConfig* msg) {
+#if CANARD_ENABLE_TAO_OPTION
+    if (transfer->tao && (transfer->payload_len > UAVCAN_TUNNEL_SERIALCONFIG_MAX_SIZE)) {
+        return true; /* invalid payload length */
+    }
+#endif
     uint32_t bit_ofs = 0;
-    _uavcan_tunnel_SerialConfig_decode(transfer, &bit_ofs, msg, 
+    if (_uavcan_tunnel_SerialConfig_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else
     true
 #endif
-    );
+    )) {
+        return true; /* invalid payload */
+    }
 
     const uint32_t byte_len = (bit_ofs+7U)/8U;
 #if CANARD_ENABLE_TAO_OPTION
@@ -52,37 +56,11 @@ bool uavcan_tunnel_SerialConfig_decode(const CanardRxTransfer* transfer, struct 
 
 #ifdef CANARD_DSDLC_TEST_BUILD
 struct uavcan_tunnel_SerialConfig sample_uavcan_tunnel_SerialConfig_msg(void) {
-
     struct uavcan_tunnel_SerialConfig msg;
 
-
-
-
-
-
     msg.channel_id = (uint8_t)random_bitlen_unsigned_val(8);
-
-
-
-
-
-
-
     msg.baud = (uint32_t)random_bitlen_unsigned_val(32);
-
-
-
-
-
-
-
     msg.options = (uint32_t)random_bitlen_unsigned_val(24);
-
-
-
-
-
     return msg;
-
 }
 #endif

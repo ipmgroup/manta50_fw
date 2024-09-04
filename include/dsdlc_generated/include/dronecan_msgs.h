@@ -23,6 +23,7 @@
 #include "uavcan.equipment.esc.RPMCommand.h"
 #include "uavcan.equipment.esc.RawCommand.h"
 #include "uavcan.equipment.esc.Status.h"
+#include "uavcan.equipment.esc.StatusExtended.h"
 #include "uavcan.equipment.gnss.Auxiliary.h"
 #include "uavcan.equipment.gnss.ECEFPositionVelocity.h"
 #include "uavcan.equipment.gnss.Fix.h"

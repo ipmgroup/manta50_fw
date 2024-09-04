@@ -1,53 +1,28 @@
-
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
 #include <canard.h>
 
 
-
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_MAX_SIZE 129
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_SIGNATURE (0xB7D725DF72724126ULL)
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_ID 40
 
-
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_ERROR_OK 0
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_ERROR_INVALID_MODE 1
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_ERROR_IN_PROGRESS 2
-
 #define UAVCAN_PROTOCOL_FILE_BEGINFIRMWAREUPDATE_RESPONSE_ERROR_UNKNOWN 255
-
-
-
-
 
 #if defined(__cplusplus) && defined(DRONECAN_CXX_WRAPPERS)
 class uavcan_protocol_file_BeginFirmwareUpdate_cxx_iface;
 #endif
 
-
 struct uavcan_protocol_file_BeginFirmwareUpdateResponse {
-
 #if defined(__cplusplus) && defined(DRONECAN_CXX_WRAPPERS)
     using cxx_iface = uavcan_protocol_file_BeginFirmwareUpdate_cxx_iface;
 #endif
-
-
-
-
     uint8_t error;
-
-
-
     struct { uint8_t len; uint8_t data[127]; }optional_error_message;
-
-
-
 };
 
 #ifdef __cplusplus
@@ -63,116 +38,70 @@ uint32_t uavcan_protocol_file_BeginFirmwareUpdateResponse_encode(struct uavcan_p
 bool uavcan_protocol_file_BeginFirmwareUpdateResponse_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg);
 
 #if defined(CANARD_DSDLC_INTERNAL)
-
 static inline void _uavcan_protocol_file_BeginFirmwareUpdateResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao);
-static inline void _uavcan_protocol_file_BeginFirmwareUpdateResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao);
+static inline bool _uavcan_protocol_file_BeginFirmwareUpdateResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao);
 void _uavcan_protocol_file_BeginFirmwareUpdateResponse_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao) {
-
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
+    size_t i;
 
     canardEncodeScalar(buffer, *bit_ofs, 8, &msg->error);
-
     *bit_ofs += 8;
-
-
-
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    const uint8_t optional_error_message_len = msg->optional_error_message.len > 127 ? 127 : msg->optional_error_message.len;
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     if (!tao) {
-
-
-        canardEncodeScalar(buffer, *bit_ofs, 7, &msg->optional_error_message.len);
+        canardEncodeScalar(buffer, *bit_ofs, 7, &optional_error_message_len);
         *bit_ofs += 7;
-
-
     }
-
-    for (size_t i=0; i < msg->optional_error_message.len; i++) {
-
-
-
-
+    for (i=0; i < optional_error_message_len; i++) {
         canardEncodeScalar(buffer, *bit_ofs, 8, &msg->optional_error_message.data[i]);
-
         *bit_ofs += 8;
-
-
     }
-
-
-
-
-
 }
 
-void _uavcan_protocol_file_BeginFirmwareUpdateResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao) {
-
+/*
+ decode uavcan_protocol_file_BeginFirmwareUpdateResponse, return true on failure, false on success
+*/
+bool _uavcan_protocol_file_BeginFirmwareUpdateResponse_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_file_BeginFirmwareUpdateResponse* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
-
+    size_t i;
     canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->error);
-
     *bit_ofs += 8;
 
-
-
-
-
-
-
-
     if (!tao) {
-
-
         canardDecodeScalar(transfer, *bit_ofs, 7, false, &msg->optional_error_message.len);
         *bit_ofs += 7;
-
-
-
     } else {
-
         msg->optional_error_message.len = ((transfer->payload_len*8)-*bit_ofs)/8;
-
-
     }
 
-
-
-    for (size_t i=0; i < msg->optional_error_message.len; i++) {
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    if (msg->optional_error_message.len > 127) {
+        return true; /* invalid value */
+    }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+    for (i=0; i < msg->optional_error_message.len; i++) {
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->optional_error_message.data[i]);
-
         *bit_ofs += 8;
-
-
     }
 
-
-
-
-
-
-
+    return false; /* success */
 }
 #endif
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -183,8 +112,5 @@ struct uavcan_protocol_file_BeginFirmwareUpdateResponse sample_uavcan_protocol_f
 
 #ifdef DRONECAN_CXX_WRAPPERS
 #include <canard/cxx_wrappers.h>
-
-
-
 #endif
 #endif

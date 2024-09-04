@@ -1,41 +1,18 @@
-
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
 #include <canard.h>
 
 
-
-
 #define UAVCAN_PROTOCOL_HARDWAREVERSION_MAX_SIZE 274
 #define UAVCAN_PROTOCOL_HARDWAREVERSION_SIGNATURE (0xAD5C4C933F4A0C4ULL)
 
 
-
-
-
-
 struct uavcan_protocol_HardwareVersion {
-
-
-
-
     uint8_t major;
-
-
-
     uint8_t minor;
-
-
-
     uint8_t unique_id[16];
-
-
-
     struct { uint8_t len; uint8_t data[255]; }certificate_of_authenticity;
-
-
-
 };
 
 #ifdef __cplusplus
@@ -51,171 +28,84 @@ uint32_t uavcan_protocol_HardwareVersion_encode(struct uavcan_protocol_HardwareV
 bool uavcan_protocol_HardwareVersion_decode(const CanardRxTransfer* transfer, struct uavcan_protocol_HardwareVersion* msg);
 
 #if defined(CANARD_DSDLC_INTERNAL)
-
 static inline void _uavcan_protocol_HardwareVersion_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao);
-static inline void _uavcan_protocol_HardwareVersion_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao);
+static inline bool _uavcan_protocol_HardwareVersion_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao);
 void _uavcan_protocol_HardwareVersion_encode(uint8_t* buffer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao) {
-
     (void)buffer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
+    size_t i;
 
     canardEncodeScalar(buffer, *bit_ofs, 8, &msg->major);
-
     *bit_ofs += 8;
-
-
-
-
-
-
     canardEncodeScalar(buffer, *bit_ofs, 8, &msg->minor);
-
     *bit_ofs += 8;
-
-
-
-
-
-
-    for (size_t i=0; i < 16; i++) {
-
-
-
-
+    for (i=0; i < 16; i++) {
         canardEncodeScalar(buffer, *bit_ofs, 8, &msg->unique_id[i]);
-
         *bit_ofs += 8;
-
-
     }
-
-
-
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    const uint8_t certificate_of_authenticity_len = msg->certificate_of_authenticity.len > 255 ? 255 : msg->certificate_of_authenticity.len;
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     if (!tao) {
-
-
-        canardEncodeScalar(buffer, *bit_ofs, 8, &msg->certificate_of_authenticity.len);
+        canardEncodeScalar(buffer, *bit_ofs, 8, &certificate_of_authenticity_len);
         *bit_ofs += 8;
-
-
     }
-
-    for (size_t i=0; i < msg->certificate_of_authenticity.len; i++) {
-
-
-
-
+    for (i=0; i < certificate_of_authenticity_len; i++) {
         canardEncodeScalar(buffer, *bit_ofs, 8, &msg->certificate_of_authenticity.data[i]);
-
         *bit_ofs += 8;
-
-
     }
-
-
-
-
-
 }
 
-void _uavcan_protocol_HardwareVersion_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao) {
-
+/*
+ decode uavcan_protocol_HardwareVersion, return true on failure, false on success
+*/
+bool _uavcan_protocol_HardwareVersion_decode(const CanardRxTransfer* transfer, uint32_t* bit_ofs, struct uavcan_protocol_HardwareVersion* msg, bool tao) {
     (void)transfer;
     (void)bit_ofs;
     (void)msg;
     (void)tao;
-
-
-
-
-
-
+    size_t i;
     canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->major);
-
     *bit_ofs += 8;
-
-
-
-
-
-
 
     canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->minor);
-
     *bit_ofs += 8;
 
-
-
-
-
-
-
-    for (size_t i=0; i < 16; i++) {
-
-
-
-
+    for (i=0; i < 16; i++) {
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->unique_id[i]);
-
         *bit_ofs += 8;
-
-
     }
-
-
-
-
-
-
-
-
 
     if (!tao) {
-
-
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->certificate_of_authenticity.len);
         *bit_ofs += 8;
-
-
-
     } else {
-
         msg->certificate_of_authenticity.len = ((transfer->payload_len*8)-*bit_ofs)/8;
-
-
     }
 
-
-
-    for (size_t i=0; i < msg->certificate_of_authenticity.len; i++) {
-
-
-
-
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wtype-limits"
+#endif
+    if (msg->certificate_of_authenticity.len > 255) {
+        return true; /* invalid value */
+    }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
+    for (i=0; i < msg->certificate_of_authenticity.len; i++) {
         canardDecodeScalar(transfer, *bit_ofs, 8, false, &msg->certificate_of_authenticity.data[i]);
-
         *bit_ofs += 8;
-
-
     }
 
-
-
-
-
-
-
+    return false; /* success */
 }
 #endif
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -226,6 +116,5 @@ struct uavcan_protocol_HardwareVersion sample_uavcan_protocol_HardwareVersion_ms
 
 #ifdef DRONECAN_CXX_WRAPPERS
 #include <canard/cxx_wrappers.h>
-
 #endif
 #endif

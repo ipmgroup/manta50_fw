@@ -1,8 +1,5 @@
-
-
 #define CANARD_DSDLC_INTERNAL
 #include <uavcan.tunnel.Protocol.h>
-
 #include <string.h>
 
 #ifdef CANARD_DSDLC_TEST_BUILD
@@ -30,14 +27,21 @@ uint32_t uavcan_tunnel_Protocol_encode(struct uavcan_tunnel_Protocol* msg, uint8
   return true if the decode is invalid
  */
 bool uavcan_tunnel_Protocol_decode(const CanardRxTransfer* transfer, struct uavcan_tunnel_Protocol* msg) {
+#if CANARD_ENABLE_TAO_OPTION
+    if (transfer->tao && (transfer->payload_len > UAVCAN_TUNNEL_PROTOCOL_MAX_SIZE)) {
+        return true; /* invalid payload length */
+    }
+#endif
     uint32_t bit_ofs = 0;
-    _uavcan_tunnel_Protocol_decode(transfer, &bit_ofs, msg, 
+    if (_uavcan_tunnel_Protocol_decode(transfer, &bit_ofs, msg,
 #if CANARD_ENABLE_TAO_OPTION
     transfer->tao
 #else
     true
 #endif
-    );
+    )) {
+        return true; /* invalid payload */
+    }
 
     const uint32_t byte_len = (bit_ofs+7U)/8U;
 #if CANARD_ENABLE_TAO_OPTION
@@ -52,21 +56,9 @@ bool uavcan_tunnel_Protocol_decode(const CanardRxTransfer* transfer, struct uavc
 
 #ifdef CANARD_DSDLC_TEST_BUILD
 struct uavcan_tunnel_Protocol sample_uavcan_tunnel_Protocol_msg(void) {
-
     struct uavcan_tunnel_Protocol msg;
 
-
-
-
-
-
     msg.protocol = (uint8_t)random_bitlen_unsigned_val(8);
-
-
-
-
-
     return msg;
-
 }
 #endif
