@@ -59,25 +59,25 @@ struct uavcan_equipment_ahrs_Solution sample_uavcan_equipment_ahrs_Solution_msg(
     struct uavcan_equipment_ahrs_Solution msg;
 
     msg.timestamp = sample_uavcan_Timestamp_msg();
-    size_t i; for (i=0; i < 4; i++) {
+    for (i=0; i < 4; i++) {
         msg.orientation_xyzw[i] = random_float16_val();
     }
     msg.orientation_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.orientation_covariance.len; i++) {
+    for (i=0; i < msg.orientation_covariance.len; i++) {
         msg.orientation_covariance.data[i] = random_float16_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.angular_velocity[i] = random_float16_val();
     }
     msg.angular_velocity_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.angular_velocity_covariance.len; i++) {
+    for (i=0; i < msg.angular_velocity_covariance.len; i++) {
         msg.angular_velocity_covariance.data[i] = random_float16_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.linear_acceleration[i] = random_float16_val();
     }
     msg.linear_acceleration_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.linear_acceleration_covariance.len; i++) {
+    for (i=0; i < msg.linear_acceleration_covariance.len; i++) {
         msg.linear_acceleration_covariance.data[i] = random_float16_val();
     }
     return msg;

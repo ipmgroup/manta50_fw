@@ -62,7 +62,7 @@ struct uavcan_protocol_file_WriteRequest sample_uavcan_protocol_file_WriteReques
     msg.offset = (uint64_t)random_bitlen_unsigned_val(40);
     msg.path = sample_uavcan_protocol_file_Path_msg();
     msg.data.len = (uint8_t)random_range_unsigned_val(0, 192);
-    size_t i; for (i=0; i < msg.data.len; i++) {
+    for (i=0; i < msg.data.len; i++) {
         msg.data.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

@@ -60,11 +60,11 @@ struct uavcan_protocol_debug_LogMessage sample_uavcan_protocol_debug_LogMessage_
 
     msg.level = sample_uavcan_protocol_debug_LogLevel_msg();
     msg.source.len = (uint8_t)random_range_unsigned_val(0, 31);
-    size_t i; for (i=0; i < msg.source.len; i++) {
+    for (i=0; i < msg.source.len; i++) {
         msg.source.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     msg.text.len = (uint8_t)random_range_unsigned_val(0, 90);
-    size_t i; for (i=0; i < msg.text.len; i++) {
+    for (i=0; i < msg.text.len; i++) {
         msg.text.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

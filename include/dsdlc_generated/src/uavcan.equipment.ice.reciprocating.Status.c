@@ -76,7 +76,7 @@ struct uavcan_equipment_ice_reciprocating_Status sample_uavcan_equipment_ice_rec
     msg.ecu_index = (uint8_t)random_bitlen_unsigned_val(6);
     msg.spark_plug_usage = (uint8_t)random_bitlen_unsigned_val(3);
     msg.cylinder_status.len = (uint8_t)random_range_unsigned_val(0, 16);
-    size_t i; for (i=0; i < msg.cylinder_status.len; i++) {
+    for (i=0; i < msg.cylinder_status.len; i++) {
         msg.cylinder_status.data[i] = sample_uavcan_equipment_ice_reciprocating_CylinderStatus_msg();
     }
     return msg;

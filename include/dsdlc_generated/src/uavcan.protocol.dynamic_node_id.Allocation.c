@@ -61,7 +61,7 @@ struct uavcan_protocol_dynamic_node_id_Allocation sample_uavcan_protocol_dynamic
     msg.node_id = (uint8_t)random_bitlen_unsigned_val(7);
     msg.first_part_of_unique_id = (bool)random_bitlen_unsigned_val(1);
     msg.unique_id.len = (uint8_t)random_range_unsigned_val(0, 16);
-    size_t i; for (i=0; i < msg.unique_id.len; i++) {
+    for (i=0; i < msg.unique_id.len; i++) {
         msg.unique_id.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

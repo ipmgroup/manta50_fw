@@ -60,7 +60,7 @@ struct uavcan_protocol_file_BeginFirmwareUpdateResponse sample_uavcan_protocol_f
 
     msg.error = (uint8_t)random_bitlen_unsigned_val(8);
     msg.optional_error_message.len = (uint8_t)random_range_unsigned_val(0, 127);
-    size_t i; for (i=0; i < msg.optional_error_message.len; i++) {
+    for (i=0; i < msg.optional_error_message.len; i++) {
         msg.optional_error_message.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

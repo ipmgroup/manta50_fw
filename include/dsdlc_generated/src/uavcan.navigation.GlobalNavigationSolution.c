@@ -66,24 +66,24 @@ struct uavcan_navigation_GlobalNavigationSolution sample_uavcan_navigation_Globa
     msg.height_agl = random_float_val();
     msg.height_baro = random_float_val();
     msg.qnh_hpa = random_float16_val();
-    size_t i; for (i=0; i < 4; i++) {
+    for (i=0; i < 4; i++) {
         msg.orientation_xyzw[i] = random_float_val();
     }
     msg.pose_covariance.len = (uint8_t)random_range_unsigned_val(0, 36);
-    size_t i; for (i=0; i < msg.pose_covariance.len; i++) {
+    for (i=0; i < msg.pose_covariance.len; i++) {
         msg.pose_covariance.data[i] = random_float16_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.linear_velocity_body[i] = random_float_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.angular_velocity_body[i] = random_float_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.linear_acceleration_body[i] = random_float16_val();
     }
     msg.velocity_covariance.len = (uint8_t)random_range_unsigned_val(0, 36);
-    size_t i; for (i=0; i < msg.velocity_covariance.len; i++) {
+    for (i=0; i < msg.velocity_covariance.len; i++) {
         msg.velocity_covariance.data[i] = random_float16_val();
     }
     return msg;

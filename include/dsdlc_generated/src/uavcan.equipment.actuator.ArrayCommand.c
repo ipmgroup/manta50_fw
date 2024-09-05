@@ -59,7 +59,7 @@ struct uavcan_equipment_actuator_ArrayCommand sample_uavcan_equipment_actuator_A
     struct uavcan_equipment_actuator_ArrayCommand msg;
 
     msg.commands.len = (uint8_t)random_range_unsigned_val(0, 15);
-    size_t i; for (i=0; i < msg.commands.len; i++) {
+    for (i=0; i < msg.commands.len; i++) {
         msg.commands.data[i] = sample_uavcan_equipment_actuator_Command_msg();
     }
     return msg;

@@ -63,7 +63,7 @@ struct uavcan_protocol_GetDataTypeInfoResponse sample_uavcan_protocol_GetDataTyp
     msg.kind = sample_uavcan_protocol_DataTypeKind_msg();
     msg.flags = (uint8_t)random_bitlen_unsigned_val(8);
     msg.name.len = (uint8_t)random_range_unsigned_val(0, 80);
-    size_t i; for (i=0; i < msg.name.len; i++) {
+    for (i=0; i < msg.name.len; i++) {
         msg.name.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

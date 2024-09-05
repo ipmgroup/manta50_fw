@@ -60,7 +60,7 @@ struct uavcan_equipment_camera_gimbal_AngularCommand sample_uavcan_equipment_cam
 
     msg.gimbal_id = (uint8_t)random_bitlen_unsigned_val(8);
     msg.mode = sample_uavcan_equipment_camera_gimbal_Mode_msg();
-    size_t i; for (i=0; i < 4; i++) {
+    for (i=0; i < 4; i++) {
         msg.quaternion_xyzw[i] = random_float16_val();
     }
     return msg;

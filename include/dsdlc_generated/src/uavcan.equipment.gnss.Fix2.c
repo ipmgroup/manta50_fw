@@ -66,7 +66,7 @@ struct uavcan_equipment_gnss_Fix2 sample_uavcan_equipment_gnss_Fix2_msg(void) {
     msg.latitude_deg_1e8 = (int64_t)random_bitlen_signed_val(37);
     msg.height_ellipsoid_mm = (int32_t)random_bitlen_signed_val(27);
     msg.height_msl_mm = (int32_t)random_bitlen_signed_val(27);
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.ned_velocity[i] = random_float_val();
     }
     msg.sats_used = (uint8_t)random_bitlen_unsigned_val(6);
@@ -74,12 +74,12 @@ struct uavcan_equipment_gnss_Fix2 sample_uavcan_equipment_gnss_Fix2_msg(void) {
     msg.mode = (uint8_t)random_bitlen_unsigned_val(4);
     msg.sub_mode = (uint8_t)random_bitlen_unsigned_val(6);
     msg.covariance.len = (uint8_t)random_range_unsigned_val(0, 36);
-    size_t i; for (i=0; i < msg.covariance.len; i++) {
+    for (i=0; i < msg.covariance.len; i++) {
         msg.covariance.data[i] = random_float16_val();
     }
     msg.pdop = random_float16_val();
     msg.ecef_position_velocity.len = (uint8_t)random_range_unsigned_val(0, 1);
-    size_t i; for (i=0; i < msg.ecef_position_velocity.len; i++) {
+    for (i=0; i < msg.ecef_position_velocity.len; i++) {
         msg.ecef_position_velocity.data[i] = sample_uavcan_equipment_gnss_ECEFPositionVelocity_msg();
     }
     return msg;

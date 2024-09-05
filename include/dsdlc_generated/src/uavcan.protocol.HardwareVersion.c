@@ -60,11 +60,11 @@ struct uavcan_protocol_HardwareVersion sample_uavcan_protocol_HardwareVersion_ms
 
     msg.major = (uint8_t)random_bitlen_unsigned_val(8);
     msg.minor = (uint8_t)random_bitlen_unsigned_val(8);
-    size_t i; for (i=0; i < 16; i++) {
+    for (i=0; i < 16; i++) {
         msg.unique_id[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     msg.certificate_of_authenticity.len = (uint8_t)random_range_unsigned_val(0, 255);
-    size_t i; for (i=0; i < msg.certificate_of_authenticity.len; i++) {
+    for (i=0; i < msg.certificate_of_authenticity.len; i++) {
         msg.certificate_of_authenticity.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

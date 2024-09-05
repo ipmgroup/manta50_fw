@@ -61,7 +61,7 @@ struct uavcan_protocol_AccessCommandShellRequest sample_uavcan_protocol_AccessCo
 
     msg.flags = (uint8_t)random_bitlen_unsigned_val(8);
     msg.input.len = (uint8_t)random_range_unsigned_val(0, 128);
-    size_t i; for (i=0; i < msg.input.len; i++) {
+    for (i=0; i < msg.input.len; i++) {
         msg.input.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

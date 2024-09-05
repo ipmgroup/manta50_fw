@@ -58,14 +58,14 @@ bool uavcan_equipment_gnss_ECEFPositionVelocity_decode(const CanardRxTransfer* t
 struct uavcan_equipment_gnss_ECEFPositionVelocity sample_uavcan_equipment_gnss_ECEFPositionVelocity_msg(void) {
     struct uavcan_equipment_gnss_ECEFPositionVelocity msg;
 
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.velocity_xyz[i] = random_float_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.position_xyz_mm[i] = (int64_t)random_bitlen_signed_val(36);
     }
     msg.covariance.len = (uint8_t)random_range_unsigned_val(0, 36);
-    size_t i; for (i=0; i < msg.covariance.len; i++) {
+    for (i=0; i < msg.covariance.len; i++) {
         msg.covariance.data[i] = random_float16_val();
     }
     return msg;

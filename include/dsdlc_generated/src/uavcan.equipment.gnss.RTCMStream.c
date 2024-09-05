@@ -60,7 +60,7 @@ struct uavcan_equipment_gnss_RTCMStream sample_uavcan_equipment_gnss_RTCMStream_
 
     msg.protocol_id = (uint8_t)random_bitlen_unsigned_val(8);
     msg.data.len = (uint8_t)random_range_unsigned_val(0, 128);
-    size_t i; for (i=0; i < msg.data.len; i++) {
+    for (i=0; i < msg.data.len; i++) {
         msg.data.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

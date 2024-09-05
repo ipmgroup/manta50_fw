@@ -60,20 +60,20 @@ struct uavcan_equipment_ahrs_RawIMU sample_uavcan_equipment_ahrs_RawIMU_msg(void
 
     msg.timestamp = sample_uavcan_Timestamp_msg();
     msg.integration_interval = random_float_val();
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.rate_gyro_latest[i] = random_float16_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.rate_gyro_integral[i] = random_float_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.accelerometer_latest[i] = random_float16_val();
     }
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.accelerometer_integral[i] = random_float_val();
     }
     msg.covariance.len = (uint8_t)random_range_unsigned_val(0, 36);
-    size_t i; for (i=0; i < msg.covariance.len; i++) {
+    for (i=0; i < msg.covariance.len; i++) {
         msg.covariance.data[i] = random_float16_val();
     }
     return msg;

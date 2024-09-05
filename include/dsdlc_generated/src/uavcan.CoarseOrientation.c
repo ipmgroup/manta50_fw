@@ -58,7 +58,7 @@ bool uavcan_CoarseOrientation_decode(const CanardRxTransfer* transfer, struct ua
 struct uavcan_CoarseOrientation sample_uavcan_CoarseOrientation_msg(void) {
     struct uavcan_CoarseOrientation msg;
 
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.fixed_axis_roll_pitch_yaw[i] = (int8_t)random_bitlen_signed_val(5);
     }
     msg.orientation_defined = (bool)random_bitlen_unsigned_val(1);

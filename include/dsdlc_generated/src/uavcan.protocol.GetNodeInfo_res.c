@@ -62,7 +62,7 @@ struct uavcan_protocol_GetNodeInfoResponse sample_uavcan_protocol_GetNodeInfoRes
     msg.software_version = sample_uavcan_protocol_SoftwareVersion_msg();
     msg.hardware_version = sample_uavcan_protocol_HardwareVersion_msg();
     msg.name.len = (uint8_t)random_range_unsigned_val(0, 80);
-    size_t i; for (i=0; i < msg.name.len; i++) {
+    for (i=0; i < msg.name.len; i++) {
         msg.name.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

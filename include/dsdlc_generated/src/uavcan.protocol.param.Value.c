@@ -79,7 +79,7 @@ struct uavcan_protocol_param_Value sample_uavcan_protocol_param_Value_msg(void) 
         }
         case UAVCAN_PROTOCOL_PARAM_VALUE_STRING_VALUE: {
             msg.string_value.len = (uint8_t)random_range_unsigned_val(0, 128);
-            size_t i; for (i=0; i < msg.string_value.len; i++) {
+            for (i=0; i < msg.string_value.len; i++) {
                 msg.string_value.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
             }
             break;

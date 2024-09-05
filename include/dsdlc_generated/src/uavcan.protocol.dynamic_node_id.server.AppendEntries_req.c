@@ -64,7 +64,7 @@ struct uavcan_protocol_dynamic_node_id_server_AppendEntriesRequest sample_uavcan
     msg.prev_log_index = (uint8_t)random_bitlen_unsigned_val(8);
     msg.leader_commit = (uint8_t)random_bitlen_unsigned_val(8);
     msg.entries.len = (uint8_t)random_range_unsigned_val(0, 1);
-    size_t i; for (i=0; i < msg.entries.len; i++) {
+    for (i=0; i < msg.entries.len; i++) {
         msg.entries.data[i] = sample_uavcan_protocol_dynamic_node_id_server_Entry_msg();
     }
     return msg;

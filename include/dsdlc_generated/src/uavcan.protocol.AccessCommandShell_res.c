@@ -61,7 +61,7 @@ struct uavcan_protocol_AccessCommandShellResponse sample_uavcan_protocol_AccessC
     msg.last_exit_status = (int32_t)random_bitlen_signed_val(32);
     msg.flags = (uint8_t)random_bitlen_unsigned_val(8);
     msg.output.len = (uint16_t)random_range_unsigned_val(0, 256);
-    size_t i; for (i=0; i < msg.output.len; i++) {
+    for (i=0; i < msg.output.len; i++) {
         msg.output.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

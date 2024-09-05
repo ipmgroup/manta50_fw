@@ -59,7 +59,7 @@ struct uavcan_equipment_esc_RawCommand sample_uavcan_equipment_esc_RawCommand_ms
     struct uavcan_equipment_esc_RawCommand msg;
 
     msg.cmd.len = (uint8_t)random_range_unsigned_val(0, 20);
-    size_t i; for (i=0; i < msg.cmd.len; i++) {
+    for (i=0; i < msg.cmd.len; i++) {
         msg.cmd.data[i] = (int16_t)random_bitlen_signed_val(14);
     }
     return msg;

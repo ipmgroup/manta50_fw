@@ -61,7 +61,7 @@ struct uavcan_protocol_enumeration_BeginRequest sample_uavcan_protocol_enumerati
 
     msg.timeout_sec = (uint16_t)random_bitlen_unsigned_val(16);
     msg.parameter_name.len = (uint8_t)random_range_unsigned_val(0, 92);
-    size_t i; for (i=0; i < msg.parameter_name.len; i++) {
+    for (i=0; i < msg.parameter_name.len; i++) {
         msg.parameter_name.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

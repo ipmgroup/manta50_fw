@@ -60,7 +60,7 @@ struct uavcan_protocol_debug_KeyValue sample_uavcan_protocol_debug_KeyValue_msg(
 
     msg.value = random_float_val();
     msg.key.len = (uint8_t)random_range_unsigned_val(0, 58);
-    size_t i; for (i=0; i < msg.key.len; i++) {
+    for (i=0; i < msg.key.len; i++) {
         msg.key.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

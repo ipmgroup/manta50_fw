@@ -64,7 +64,7 @@ struct uavcan_tunnel_Targetted sample_uavcan_tunnel_Targetted_msg(void) {
     msg.options = (uint8_t)random_bitlen_unsigned_val(4);
     msg.baudrate = (uint32_t)random_bitlen_unsigned_val(24);
     msg.buffer.len = (uint8_t)random_range_unsigned_val(0, 120);
-    size_t i; for (i=0; i < msg.buffer.len; i++) {
+    for (i=0; i < msg.buffer.len; i++) {
         msg.buffer.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

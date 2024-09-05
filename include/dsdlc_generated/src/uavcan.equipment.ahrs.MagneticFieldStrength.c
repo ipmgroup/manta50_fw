@@ -58,11 +58,11 @@ bool uavcan_equipment_ahrs_MagneticFieldStrength_decode(const CanardRxTransfer* 
 struct uavcan_equipment_ahrs_MagneticFieldStrength sample_uavcan_equipment_ahrs_MagneticFieldStrength_msg(void) {
     struct uavcan_equipment_ahrs_MagneticFieldStrength msg;
 
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.magnetic_field_ga[i] = random_float16_val();
     }
     msg.magnetic_field_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.magnetic_field_covariance.len; i++) {
+    for (i=0; i < msg.magnetic_field_covariance.len; i++) {
         msg.magnetic_field_covariance.data[i] = random_float16_val();
     }
     return msg;

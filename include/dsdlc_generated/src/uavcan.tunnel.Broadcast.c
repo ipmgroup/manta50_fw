@@ -61,7 +61,7 @@ struct uavcan_tunnel_Broadcast sample_uavcan_tunnel_Broadcast_msg(void) {
     msg.protocol = sample_uavcan_tunnel_Protocol_msg();
     msg.channel_id = (uint8_t)random_bitlen_unsigned_val(8);
     msg.buffer.len = (uint8_t)random_range_unsigned_val(0, 60);
-    size_t i; for (i=0; i < msg.buffer.len; i++) {
+    for (i=0; i < msg.buffer.len; i++) {
         msg.buffer.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

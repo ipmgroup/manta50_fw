@@ -59,7 +59,7 @@ struct uavcan_protocol_file_Path sample_uavcan_protocol_file_Path_msg(void) {
     struct uavcan_protocol_file_Path msg;
 
     msg.path.len = (uint8_t)random_range_unsigned_val(0, 200);
-    size_t i; for (i=0; i < msg.path.len; i++) {
+    for (i=0; i < msg.path.len; i++) {
         msg.path.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

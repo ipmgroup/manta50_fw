@@ -59,7 +59,7 @@ struct uavcan_equipment_esc_RPMCommand sample_uavcan_equipment_esc_RPMCommand_ms
     struct uavcan_equipment_esc_RPMCommand msg;
 
     msg.rpm.len = (uint8_t)random_range_unsigned_val(0, 20);
-    size_t i; for (i=0; i < msg.rpm.len; i++) {
+    for (i=0; i < msg.rpm.len; i++) {
         msg.rpm.data[i] = (int32_t)random_bitlen_signed_val(18);
     }
     return msg;

@@ -66,7 +66,7 @@ struct uavcan_equipment_air_data_RawAirData sample_uavcan_equipment_air_data_Raw
     msg.static_air_temperature = random_float16_val();
     msg.pitot_temperature = random_float16_val();
     msg.covariance.len = (uint8_t)random_range_unsigned_val(0, 16);
-    size_t i; for (i=0; i < msg.covariance.len; i++) {
+    for (i=0; i < msg.covariance.len; i++) {
         msg.covariance.data[i] = random_float16_val();
     }
     return msg;

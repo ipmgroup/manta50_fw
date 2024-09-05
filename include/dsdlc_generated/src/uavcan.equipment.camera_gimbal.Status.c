@@ -60,11 +60,11 @@ struct uavcan_equipment_camera_gimbal_Status sample_uavcan_equipment_camera_gimb
 
     msg.gimbal_id = (uint8_t)random_bitlen_unsigned_val(8);
     msg.mode = sample_uavcan_equipment_camera_gimbal_Mode_msg();
-    size_t i; for (i=0; i < 4; i++) {
+    for (i=0; i < 4; i++) {
         msg.camera_orientation_in_body_frame_xyzw[i] = random_float16_val();
     }
     msg.camera_orientation_in_body_frame_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.camera_orientation_in_body_frame_covariance.len; i++) {
+    for (i=0; i < msg.camera_orientation_in_body_frame_covariance.len; i++) {
         msg.camera_orientation_in_body_frame_covariance.data[i] = random_float16_val();
     }
     return msg;

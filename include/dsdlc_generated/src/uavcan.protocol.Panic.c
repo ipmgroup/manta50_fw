@@ -59,7 +59,7 @@ struct uavcan_protocol_Panic sample_uavcan_protocol_Panic_msg(void) {
     struct uavcan_protocol_Panic msg;
 
     msg.reason_text.len = (uint8_t)random_range_unsigned_val(0, 7);
-    size_t i; for (i=0; i < msg.reason_text.len; i++) {
+    for (i=0; i < msg.reason_text.len; i++) {
         msg.reason_text.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

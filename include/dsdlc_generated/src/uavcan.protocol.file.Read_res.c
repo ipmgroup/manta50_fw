@@ -60,7 +60,7 @@ struct uavcan_protocol_file_ReadResponse sample_uavcan_protocol_file_ReadRespons
 
     msg.error = sample_uavcan_protocol_file_Error_msg();
     msg.data.len = (uint16_t)random_range_unsigned_val(0, 256);
-    size_t i; for (i=0; i < msg.data.len; i++) {
+    for (i=0; i < msg.data.len; i++) {
         msg.data.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

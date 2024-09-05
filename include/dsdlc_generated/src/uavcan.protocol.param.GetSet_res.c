@@ -63,7 +63,7 @@ struct uavcan_protocol_param_GetSetResponse sample_uavcan_protocol_param_GetSetR
     msg.max_value = sample_uavcan_protocol_param_NumericValue_msg();
     msg.min_value = sample_uavcan_protocol_param_NumericValue_msg();
     msg.name.len = (uint8_t)random_range_unsigned_val(0, 92);
-    size_t i; for (i=0; i < msg.name.len; i++) {
+    for (i=0; i < msg.name.len; i++) {
         msg.name.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

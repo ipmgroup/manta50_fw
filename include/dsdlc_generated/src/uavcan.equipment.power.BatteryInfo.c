@@ -72,7 +72,7 @@ struct uavcan_equipment_power_BatteryInfo sample_uavcan_equipment_power_BatteryI
     msg.battery_id = (uint8_t)random_bitlen_unsigned_val(8);
     msg.model_instance_id = (uint32_t)random_bitlen_unsigned_val(32);
     msg.model_name.len = (uint8_t)random_range_unsigned_val(0, 31);
-    size_t i; for (i=0; i < msg.model_name.len; i++) {
+    for (i=0; i < msg.model_name.len; i++) {
         msg.model_name.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;

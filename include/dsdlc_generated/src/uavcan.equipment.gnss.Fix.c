@@ -66,18 +66,18 @@ struct uavcan_equipment_gnss_Fix sample_uavcan_equipment_gnss_Fix_msg(void) {
     msg.latitude_deg_1e8 = (int64_t)random_bitlen_signed_val(37);
     msg.height_ellipsoid_mm = (int32_t)random_bitlen_signed_val(27);
     msg.height_msl_mm = (int32_t)random_bitlen_signed_val(27);
-    size_t i; for (i=0; i < 3; i++) {
+    for (i=0; i < 3; i++) {
         msg.ned_velocity[i] = random_float16_val();
     }
     msg.sats_used = (uint8_t)random_bitlen_unsigned_val(6);
     msg.status = (uint8_t)random_bitlen_unsigned_val(2);
     msg.pdop = random_float16_val();
     msg.position_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.position_covariance.len; i++) {
+    for (i=0; i < msg.position_covariance.len; i++) {
         msg.position_covariance.data[i] = random_float16_val();
     }
     msg.velocity_covariance.len = (uint8_t)random_range_unsigned_val(0, 9);
-    size_t i; for (i=0; i < msg.velocity_covariance.len; i++) {
+    for (i=0; i < msg.velocity_covariance.len; i++) {
         msg.velocity_covariance.data[i] = random_float16_val();
     }
     return msg;

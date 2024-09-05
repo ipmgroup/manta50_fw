@@ -59,7 +59,7 @@ struct uavcan_equipment_indication_LightsCommand sample_uavcan_equipment_indicat
     struct uavcan_equipment_indication_LightsCommand msg;
 
     msg.commands.len = (uint8_t)random_range_unsigned_val(0, 20);
-    size_t i; for (i=0; i < msg.commands.len; i++) {
+    for (i=0; i < msg.commands.len; i++) {
         msg.commands.data[i] = sample_uavcan_equipment_indication_SingleLightCommand_msg();
     }
     return msg;

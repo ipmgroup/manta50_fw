@@ -60,7 +60,7 @@ struct uavcan_protocol_dynamic_node_id_server_Discovery sample_uavcan_protocol_d
 
     msg.configured_cluster_size = (uint8_t)random_bitlen_unsigned_val(8);
     msg.known_nodes.len = (uint8_t)random_range_unsigned_val(0, 5);
-    size_t i; for (i=0; i < msg.known_nodes.len; i++) {
+    for (i=0; i < msg.known_nodes.len; i++) {
         msg.known_nodes.data[i] = (uint8_t)random_bitlen_unsigned_val(8);
     }
     return msg;
